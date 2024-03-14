@@ -1,0 +1,3 @@
+CLR C
+MOV A, #23H
+CJNE A, #86H, LABEL

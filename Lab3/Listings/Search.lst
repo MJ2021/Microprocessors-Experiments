@@ -1,0 +1,129 @@
+A51 MACRO ASSEMBLER  SEARCH                                                               04/02/2022 07:10:21 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Search.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Search.a51 SET(SMALL) DEBUG PRINT(.\Listings\Search.lst) OBJECT(.\Objec
+                      ts\Search.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 020120            2     LJMP MAIN
+0120                   3     ORG 120H
+0120                   4     MAIN:
+0120 3130              5     CALL SEARCH
+0122 80FE              6     HERE: SJMP HERE
+0130                   7     ORG 130H
+0130                   8     SEARCH:
+                       9     
+                      10     
+  0002                11     NUM2 EQU 2
+0130 A830             12              MOV R0, 30H
+0132 AA31             13              MOV R2, 31H  
+0134 7931             14              MOV R1, #31H
+                      15             
+0136 E8               16              MOV A, R0
+0137 2531             17              ADD A, 31H
+0139 9401             18              SUBB A ,#1H
+013B FC               19              MOV R4, A
+                      20              
+013C A830             21              MOV R0, 30H
+                      22              
+013E 8801             23              MOV 1, R0
+0140 EA               24              MOV A, R2
+0141 605A             25              JZ CASE
+0143 75F002           26              MOV B, #NUM2
+0146 84               27              DIV AB
+0147 89F0             28              MOV B, R1
+0149 25F0             29              ADD A, B
+                      30              
+014B C3               31     CHECK: CLR C
+014C F9               32                MOV R1, A
+014D E7               33            MOV A, @R1
+014E B53204           34                CJNE A, 32H, PASS
+0151 8933             35                MOV 33H, R1
+0153 804D             36                SJMP STOP
+                      37                
+0155 7400             38     PASS: MOV A, #00H
+0157 3400             39           ADDC A, #00H
+0159 B40017           40               CJNE A, #00H, FORWARD  
+015C AC01             41               MOV R4, 1   
+015E C3               42               CLR C
+015F EC               43               MOV A, R4
+0160 98               44               SUBB A, R0 
+0161 9401             45               SUBB A, #1
+0163 6024             46               JZ FIRST
+0165 2401             47               ADD A, #1
+0167 C3               48               CLR C
+                      49               
+0168 75F002           50               MOV B, #NUM2
+016B 84               51               DIV AB
+016C F5F0             52               MOV B, A
+016E E9               53               MOV A, R1
+016F 95F0             54               SUBB A,B
+0171 314B             55               ACALL CHECK
+                      56              
+0173 A801             57     FORWARD: MOV R0, 1
+A51 MACRO ASSEMBLER  SEARCH                                                               04/02/2022 07:10:21 PAGE     2
+
+0175 C3               58              CLR C
+0176 EC               59                      MOV A, R4
+0177 98               60                      SUBB A, R0
+0178 9401             61                      SUBB A, #1
+017A 6017             62                      JZ LAST
+017C 2401             63                      ADD A, #1
+017E C3               64                      CLR C
+                      65                      
+017F 75F002           66                      MOV B, #NUM2
+0182 84               67                      DIV AB
+0183 88F0             68                      MOV B, R0
+0185 25F0             69                      ADD A, B
+0187 314B             70                      ACALL CHECK
+                      71                      
+0189 E8               72     FIRST: MOV A, R0
+018A F9               73                MOV R1, A
+018B E7               74                MOV A, @R1
+018C B5320E           75                CJNE A, 32H, CASE
+018F 8933             76                MOV 33H, R1
+0191 800F             77                SJMP STOP
+                      78                      
+0193 8C01             79     LAST: MOV 1, R4
+0195 E7               80               MOV A, @R1
+0196 B53204           81               CJNE A, 32H, CASE
+0199 8933             82               MOV 33H, R1
+019B 8005             83               SJMP STOP
+                      84     
+019D 75330E           85     CASE: MOV 33H , #0EH
+01A0 8000             86               SJMP STOP
+                      87               
+01A2 80FE             88     STOP: SJMP STOP
+                      89     
+01A4 22               90     RET
+                      91     END
+A51 MACRO ASSEMBLER  SEARCH                                                               04/02/2022 07:10:21 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+CASE . . . . . . .  C ADDR   019DH   A   
+CHECK. . . . . . .  C ADDR   014BH   A   
+FIRST. . . . . . .  C ADDR   0189H   A   
+FORWARD. . . . . .  C ADDR   0173H   A   
+HERE . . . . . . .  C ADDR   0122H   A   
+LAST . . . . . . .  C ADDR   0193H   A   
+MAIN . . . . . . .  C ADDR   0120H   A   
+NUM2 . . . . . . .  N NUMB   0002H   A   
+PASS . . . . . . .  C ADDR   0155H   A   
+SEARCH . . . . . .  C ADDR   0130H   A   
+STOP . . . . . . .  C ADDR   01A2H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

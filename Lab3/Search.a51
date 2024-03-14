@@ -1,0 +1,91 @@
+ORG 0H
+LJMP MAIN
+ORG 120H
+MAIN:
+CALL SEARCH
+HERE: SJMP HERE
+ORG 130H
+SEARCH:
+// Add your code here.
+
+NUM2 EQU 2
+	 MOV R0, 30H
+	 MOV R2, 31H // TOTAL NUMBERS
+	 MOV R1, #31H
+	
+	 MOV A, R0
+	 ADD A, 31H
+	 SUBB A ,#1H
+	 MOV R4, A
+	 
+	 MOV R0, 30H
+	 
+	 MOV 1, R0
+	 MOV A, R2
+	 JZ CASE
+	 MOV B, #NUM2
+	 DIV AB
+	 MOV B, R1
+	 ADD A, B
+	 
+CHECK: CLR C
+	   MOV R1, A
+       MOV A, @R1
+	   CJNE A, 32H, PASS
+	   MOV 33H, R1
+	   SJMP STOP
+	   
+PASS: MOV A, #00H
+      ADDC A, #00H
+	  CJNE A, #00H, FORWARD // NUMBER IS LESSER THAN MIDDLE ONE
+	  MOV R4, 1  // INTERVAL NOW FROM R0 TO R4
+	  CLR C
+	  MOV A, R4
+	  SUBB A, R0 
+	  SUBB A, #1
+	  JZ FIRST
+	  ADD A, #1
+	  CLR C
+	  
+	  MOV B, #NUM2
+	  DIV AB
+	  MOV B, A
+	  MOV A, R1
+	  SUBB A,B
+	  ACALL CHECK
+	 
+FORWARD: MOV R0, 1
+         CLR C
+		 MOV A, R4
+		 SUBB A, R0
+		 SUBB A, #1
+		 JZ LAST
+		 ADD A, #1
+		 CLR C
+		 
+		 MOV B, #NUM2
+		 DIV AB
+		 MOV B, R0
+		 ADD A, B
+		 ACALL CHECK
+		 
+FIRST: MOV A, R0
+	   MOV R1, A
+	   MOV A, @R1
+	   CJNE A, 32H, CASE
+	   MOV 33H, R1
+	   SJMP STOP
+		 
+LAST: MOV 1, R4
+	  MOV A, @R1
+	  CJNE A, 32H, CASE
+	  MOV 33H, R1
+	  SJMP STOP
+
+CASE: MOV 33H , #0EH
+	  SJMP STOP
+	  
+STOP: SJMP STOP
+
+RET
+END

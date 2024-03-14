@@ -1,0 +1,3 @@
+".\Objects\Interrupt.obj" 
+TO ".\Objects\Lab7_1" 
+PRINT(".\Listings\Lab7_1.m51") RAMSIZE(256) 

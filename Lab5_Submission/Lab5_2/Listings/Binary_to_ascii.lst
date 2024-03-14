@@ -1,0 +1,70 @@
+A51 MACRO ASSEMBLER  BINARY_TO_ASCII                                                      02/14/2022 02:22:17 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Binary_to_ascii.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Binary_to_ascii.a51 SET(SMALL) DEBUG PRINT(.\Listings\Binary_to_ascii.l
+                      st) OBJECT(.\Objects\Binary_to_ascii.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 020030            2     LJMP MAIN
+0030                   3     ORG 030H
+0030 E530              4     MAIN:  MOV A,30H         
+0032 75F010            5            MOV B,#16
+0035 84                6            DIV AB                 
+0036 B40A10            7            CJNE A, #0AH, FUNC1
+                       8                
+0039 1156              9                ACALL MORE
+003B F560             10                MOV 60H,A
+003D E5F0             11                MOV A,B
+003F 8000             12                SJMP FUNC2
+                      13               
+0041 4016             14     FUNC2: JC  LESS
+0043 5011             15            JNC MORE
+0045 F561             16                MOV 61H,A
+0047 80FE             17                HERE : SJMP HERE
+                      18                
+0049 400E             19     FUNC1: JC  LESS
+004B 5009             20            JNC MORE
+004D F560             21            MOV 60H,A
+004F E5F0             22            MOV A,B
+0051 B40AED           23                CJNE A, #0AH, FUNC2
+0054 8000             24                SJMP MORE
+                      25     
+                      26                
+0056 2437             27     MORE:  ADD A,#37H           
+0058 22               28            RET
+                      29                
+0059 2430             30     LESS:  ADD A,#30H           
+005B 22               31            RET
+                      32                
+                      33     
+                      34     END
+                             
+                                     
+                             
+                             
+                                     
+A51 MACRO ASSEMBLER  BINARY_TO_ASCII                                                      02/14/2022 02:22:17 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+FUNC1. . . . . . .  C ADDR   0049H   A   
+FUNC2. . . . . . .  C ADDR   0041H   A   
+HERE . . . . . . .  C ADDR   0047H   A   
+LESS . . . . . . .  C ADDR   0059H   A   
+MAIN . . . . . . .  C ADDR   0030H   A   
+MORE . . . . . . .  C ADDR   0056H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

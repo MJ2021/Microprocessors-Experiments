@@ -1,0 +1,3 @@
+".\Objects\Dates.obj" 
+TO ".\Objects\Lab4_Dates" 
+PRINT(".\Listings\Lab4_Dates.m51") RAMSIZE(256) 

@@ -1,0 +1,37 @@
+ORG 0000H
+LJMP MAIN
+
+ORG 200H
+	
+MAIN: MOV TMOD , #01
+	  MOV 30H, #2
+	  MOV A, 30H
+	  MOV B, #40   
+	  MUL AB
+	  MOV R3, A
+
+LOOP1: MOV P1, #0FFH
+	   ACALL DELAY_LOOP
+	   SJMP LOOP2
+	   
+LOOP2: MOV P1, #00H
+       ACALL DELAY_LOOP
+	   SJMP LOOP1
+	   
+DELAY_LOOP: ACALL DELAY
+            DJNZ R3, DELAY_LOOP
+			MOV R3, A
+	        RET
+	   
+DELAY: MOV TH0, #3CH
+	   MOV TL0, #0B0H
+	   SETB TR0
+
+COUNT: JNB TF0, COUNT
+	   CLR TR0
+	   CLR TF0
+	   RET
+	   
+END
+
+	

@@ -1,0 +1,90 @@
+A51 MACRO ASSEMBLER  MAC_OPERATION                                                        01/24/2022 14:11:08 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\MAC_Operation.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE MAC_Operation.a51 SET(SMALL) DEBUG PRINT(.\Listings\MAC_Operation.lst) 
+                      OBJECT(.\Objects\MAC_Operation.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 020100            2     LJMP MAIN
+0100                   3     ORG 100H
+0100                   4     MAIN:
+0100 3130              5     CALL MAC
+0102 80FE              6     HERE: SJMP HERE
+0130                   7     ORG 130H
+                       8     
+0130                   9     MAC:
+                      10     
+0130 E570             11     MOV A, 70H
+0132 8573F0           12     MOV B, 73H
+0135 A4               13     MUL AB  
+0136 FA               14     MOV R2, A
+0137 ABF0             15     MOV R3, B
+                      16     
+0139 E571             17     MOV A, 71H
+013B 8574F0           18     MOV B, 74H
+013E A4               19     MUL AB  
+013F FC               20     MOV R4, A
+0140 ADF0             21     MOV R5, B
+                      22     
+0142 3157             23     CALL ADD16  
+                      24     
+0144 AE50             25     MOV R6, 50H  
+                      26     
+0146 E572             27     MOV A, 72H
+0148 8575F0           28     MOV B, 75H
+014B A4               29     MUL AB  
+014C FA               30     MOV R2, A
+014D ABF0             31     MOV R3, B
+                      32     
+014F 3157             33     CALL ADD16  
+                      34     
+0151 E550             35     MOV A, 50H
+0153 2E               36     ADD A, R6  
+0154 F550             37     MOV 50H, A 
+                      38     
+                      39     
+0156 22               40     RET
+0157                  41     ADD16:
+                      42     
+0157 C3               43     CLR C
+0158 EA               44     MOV A, R2
+0159 2C               45     ADD A, R4
+015A FC               46     MOV R4, A
+015B EB               47     MOV A, R3
+015C 3D               48     ADDC A, R5
+015D FD               49     MOV R5, A
+                      50     
+015E 8C52             51     MOV 52H, R4
+0160 8D51             52     MOV 51H, R5
+                      53     
+0162 7400             54     MOV A, #00H
+0164 3400             55     ADDC A, #00H
+0166 F550             56     MOV 50H, A
+                      57     
+A51 MACRO ASSEMBLER  MAC_OPERATION                                                        01/24/2022 14:11:08 PAGE     2
+
+0168 22               58     RET
+                      59     END
+A51 MACRO ASSEMBLER  MAC_OPERATION                                                        01/24/2022 14:11:08 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ADD16. . . . . . .  C ADDR   0157H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+HERE . . . . . . .  C ADDR   0102H   A   
+MAC. . . . . . . .  C ADDR   0130H   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

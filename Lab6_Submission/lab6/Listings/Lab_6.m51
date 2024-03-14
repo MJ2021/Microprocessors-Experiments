@@ -1,0 +1,79 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    04/02/2022  11:44:14  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\Timer.obj TO .\Objects\Lab_6 PRINT (.\Listings\Lab_6.m51) RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\Timer.obj (TIMER)
+
+
+LINK MAP OF MODULE:  .\Objects\Lab_6 (TIMER)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0231H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Lab_6 (TIMER)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TIMER
+  D:00F0H         SYMBOL        B
+  C:0229H         SYMBOL        COUNT
+  C:0221H         SYMBOL        DELAY
+  C:021BH         SYMBOL        DELAY_LOOP
+  C:020DH         SYMBOL        LOOP1
+  C:0214H         SYMBOL        LOOP2
+  C:0200H         SYMBOL        MAIN
+  D:0090H         SYMBOL        P1
+  B:0088H.5       SYMBOL        TF0
+  D:008CH         SYMBOL        TH0
+  D:008AH         SYMBOL        TL0
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  C:0000H         LINE#         2
+  C:0200H         LINE#         6
+  C:0203H         LINE#         7
+  C:0206H         LINE#         8
+  C:0208H         LINE#         9
+  C:020BH         LINE#         10
+  C:020CH         LINE#         11
+  C:020DH         LINE#         13
+  C:0210H         LINE#         14
+  C:0212H         LINE#         15
+  C:0214H         LINE#         17
+  C:0217H         LINE#         18
+  C:0219H         LINE#         19
+  C:021BH         LINE#         21
+  C:021DH         LINE#         22
+  C:021FH         LINE#         23
+  C:0220H         LINE#         24
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  04/02/2022  11:44:14  PAGE 2
+
+
+  C:0221H         LINE#         26
+  C:0224H         LINE#         27
+  C:0227H         LINE#         28
+  C:0229H         LINE#         30
+  C:022CH         LINE#         31
+  C:022EH         LINE#         32
+  C:0230H         LINE#         33
+  -------         ENDMOD        TIMER
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0034H BYTE ( 2%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=561
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

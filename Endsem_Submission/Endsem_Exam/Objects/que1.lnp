@@ -1,0 +1,3 @@
+".\Objects\First_Que_Matrix.obj" 
+TO ".\Objects\que1" 
+PRINT(".\Listings\que1.m51") RAMSIZE(256) 

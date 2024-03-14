@@ -1,0 +1,440 @@
+A51 MACRO ASSEMBLER  PAM                                                                  03/06/2022 15:40:36 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\PAM.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE PAM.a51 SET(SMALL) DEBUG PRINT(.\Listings\PAM.lst) OBJECT(.\Objects\PAM
+                      .obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; THIS SUBROUTINE WRITES CHARACTERS ON THE LCD
+  00A0                 2     LCD_DATA EQU P2    ;LCD DATA PORT
+  0080                 3     LCD_RS   EQU P0.0  ;LCD REGISTER SELECT
+  0081                 4     LCD_RW   EQU P0.1  ;LCD READ/WRITE
+  0082                 5     LCD_EN   EQU P0.2  ;LCD ENABLE
+                       6     
+0000                   7     ORG 0000H
+0000 020200            8     LJMP START
+                       9     
+0200                  10     ORG 200H
+                      11             
+0200                  12     START:
+0200                  13     LCD1:
+0200 75A000           14           MOV P2,#00H
+0203 759000           15           MOV P1,#00H
+                      16               ;INITIAL DELAY FOR LCD POWER UP
+                      17     
+                      18             ;HERE1:SETB P1.0
+0206 519D             19               ACALL DELAY
+                      20             ;CLR P1.0
+0208 519D             21               ACALL DELAY
+                      22             ;SJMP HERE1
+                      23     
+                      24     
+020A 5132             25               ACALL LCD_INIT      ;INITIALISE LCD
+                      26             
+020C 519D             27               ACALL DELAY
+020E 519D             28               ACALL DELAY
+0210 519D             29               ACALL DELAY
+0212 7486             30               MOV A,#86H             ;PUT CURSOR ON FIRST ROW,5 COLUMN
+0214 516F             31               ACALL LCD_COMMAND      ;SEND COMMAND TO LCD
+0216 519D             32               ACALL DELAY
+0218 900300           33               MOV   DPTR,#MY_STRING1   ;LOAD DPTR WITH SRING1 ADDR
+021B 518F             34               ACALL LCD_SENDSTRING     ;CALL TEXT STRINGS SENDING ROUTINE
+021D 519D             35               ACALL DELAY
+                      36     
+021F 74C3             37               MOV A,#0C3H             ;PUT CURSOR ON SECOND ROW,3 COLUMN
+0221 516F             38               ACALL LCD_COMMAND
+0223 519D             39               ACALL DELAY
+0225 900308           40               MOV   DPTR,#MY_STRING2
+0228 518F             41               ACALL LCD_SENDSTRING
+                      42              
+022A 757023           43     MOV 70H, #23H
+022D 757145           44     MOV 71H, #45H
+                      45     
+0230 6128             46     JMP LEVEL1
+                      47     
+                      48     ;------------------------LCD INITIALISATION ROUTINE----------------------------------------
+                             ------------
+0232                  49     LCD_INIT:
+0232 75A038           50              MOV   LCD_DATA,#38H  ;FUNCTION SET: 2 LINE, 8-BIT, 5X7 DOTS
+0235 C280             51              CLR   LCD_RS         ;SELECTED COMMAND REGISTER
+0237 C281             52              CLR   LCD_RW         ;WE ARE WRITING IN INSTRUCTION REGISTER
+0239 D282             53              SETB  LCD_EN         ;ENABLE H->L
+023B 519D             54                      ACALL DELAY
+023D C282             55              CLR   LCD_EN
+023F 519D             56                  ACALL DELAY
+A51 MACRO ASSEMBLER  PAM                                                                  03/06/2022 15:40:36 PAGE     2
+
+                      57     
+0241 75A00C           58              MOV   LCD_DATA,#0CH  ;DISPLAY ON, CURSON OFF
+0244 C280             59              CLR   LCD_RS         ;SELECTED INSTRUCTION REGISTER
+0246 C281             60              CLR   LCD_RW         ;WE ARE WRITING IN INSTRUCTION REGISTER
+0248 D282             61              SETB  LCD_EN         ;ENABLE H->L
+024A 519D             62                      ACALL DELAY
+024C C282             63              CLR   LCD_EN
+                      64              
+024E 519D             65                      ACALL DELAY
+0250 75A001           66              MOV   LCD_DATA,#01H  ;CLEAR LCD
+0253 C280             67              CLR   LCD_RS         ;SELECTED COMMAND REGISTER
+0255 C281             68              CLR   LCD_RW         ;WE ARE WRITING IN INSTRUCTION REGISTER
+0257 D282             69              SETB  LCD_EN         ;ENABLE H->L
+0259 519D             70                      ACALL DELAY
+025B C282             71              CLR   LCD_EN
+                      72              
+025D 519D             73                      ACALL DELAY
+                      74     
+025F 75A006           75              MOV   LCD_DATA,#06H  ;ENTRY MODE, AUTO INCREMENT WITH NO SHIFT
+0262 C280             76              CLR   LCD_RS         ;SELECTED COMMAND REGISTER
+0264 C281             77              CLR   LCD_RW         ;WE ARE WRITING IN INSTRUCTION REGISTER
+0266 D282             78              SETB  LCD_EN         ;ENABLE H->L
+0268 519D             79                      ACALL DELAY
+026A C282             80              CLR   LCD_EN
+                      81     
+026C 519D             82                      ACALL DELAY
+                      83              
+026E 22               84              RET                  ;RETURN FROM ROUTINE
+                      85     
+                      86     ;-----------------------COMMAND SENDING ROUTINE-------------------------------------
+026F                  87      LCD_COMMAND:
+026F F5A0             88              MOV   LCD_DATA,A     ;MOVE THE COMMAND TO LCD PORT
+0271 C280             89              CLR   LCD_RS         ;SELECTED COMMAND REGISTER
+0273 C281             90              CLR   LCD_RW         ;WE ARE WRITING IN INSTRUCTION REGISTER
+0275 D282             91              SETB  LCD_EN         ;ENABLE H->L
+0277 519D             92                      ACALL DELAY
+0279 C282             93              CLR   LCD_EN
+027B 519D             94                      ACALL DELAY
+                      95         
+027D 22               96              RET  
+                      97     ;-----------------------DATA SENDING ROUTINE-------------------------------------          
+                                       
+027E                  98      LCD_SENDDATA:
+027E F5A0             99              MOV   LCD_DATA,A     ;MOVE THE COMMAND TO LCD PORT
+0280 D280            100              SETB  LCD_RS         ;SELECTED DATA REGISTER
+0282 C281            101              CLR   LCD_RW         ;WE ARE WRITING
+0284 D282            102              SETB  LCD_EN         ;ENABLE H->L
+0286 519D            103                      ACALL DELAY
+0288 C282            104              CLR   LCD_EN
+028A 519D            105              ACALL DELAY
+028C 519D            106                      ACALL DELAY
+028E 22              107              RET                  ;RETURN FROM BUSY ROUTINE
+                     108     
+                     109     ;-----------------------TEXT STRINGS SENDING ROUTINE-------------------------------------
+028F                 110     LCD_SENDSTRING:
+028F C0E0            111             PUSH 0E0H
+0291                 112             LCD_SENDSTRING_LOOP:
+0291 E4              113                      CLR   A                 ;CLEAR ACCUMULATOR FOR ANY PREVIOUS DATA
+0292 93              114                      MOVC  A,@A+DPTR         ;LOAD THE FIRST CHARACTER IN ACCUMULATOR
+0293 6005            115                      JZ    EXIT              ;GO TO EXIT IF ZERO
+0295 517E            116                      ACALL LCD_SENDDATA      ;SEND FIRST CHAR
+0297 A3              117                      INC   DPTR              ;INCREMENT DATA POINTER
+0298 80F7            118                      SJMP  LCD_SENDSTRING_LOOP    ;JUMP BACK TO SEND THE NEXT CHARACTER
+029A D0E0            119     EXIT:    POP 0E0H
+029C 22              120              RET                     ;END OF ROUTINE
+                     121     
+A51 MACRO ASSEMBLER  PAM                                                                  03/06/2022 15:40:36 PAGE     3
+
+                     122     ;----------------------DELAY ROUTINE-----------------------------------------------------
+029D C000            123     DELAY:   PUSH 0
+029F C001            124              PUSH 1
+02A1 7801            125              MOV R0,#1
+02A3 79FF            126     LOOP2:   MOV R1,#255
+02A5 D9FE            127              LOOP1:  DJNZ R1, LOOP1
+02A7 D8FA            128              DJNZ R0, LOOP2
+02A9 D001            129              POP 1
+02AB D000            130              POP 0 
+02AD 22              131              RET
+                     132     
+                     133     ;------------- ROM TEXT STRINGS------------------------------------------------------------
+                             ---
+0300                 134     ORG 300H
+0300                 135     MY_STRING1:
+0300 4C455645        136              DB   "LEVEL 1", 00H
+0304 4C203100                
+0308                 137     MY_STRING2:
+0308 4C455645        138              DB   "LEVEL 2", 00H
+030C 4C203200                
+0310                 139     MY_STRING3:
+0310 4C455645        140              DB   "LEVEL 3", 00H
+0314 4C203300                
+0318                 141     MY_STRING4:
+0318 4C455645        142              DB   "LEVEL 4", 00H
+031C 4C203400                
+                     143                              
+0320                 144     MY_STRING5:
+0320 56414C55        145                      DB   "VALUE: ", 00H
+0324 453A2000                
+                     146                              
+                     147     
+                     148     
+0328 7486            149     LEVEL1: MOV A,#86H               ;PUT CURSOR ON FIRST ROW,6 COLUMN
+032A 516F            150                     ACALL LCD_COMMAND        ;SEND COMMAND TO LCD
+032C 519D            151                     ACALL DELAY
+032E 900300          152                     MOV   DPTR,#MY_STRING1   ;LOAD DPTR WITH SRING1 ADDR
+0331 518F            153                     ACALL LCD_SENDSTRING       ;CALL TEXT STRINGS SENDING ROUTINE
+0333 519D            154                     ACALL DELAY
+                     155     
+0335 74C3            156                     MOV A,#0C3H              ;PUT CURSOR ON FIRST ROW,3 COLUMN
+0337 516F            157                     ACALL LCD_COMMAND        ;SEND COMMAND TO LCD
+0339 519D            158                     ACALL DELAY
+033B 900320          159                     MOV   DPTR,#MY_STRING5   ;LOAD DPTR WITH SRING5 ADDR
+033E 518F            160                     ACALL LCD_SENDSTRING       ;CALL TEXT STRINGS SENDING ROUTINE
+0340 519D            161                     ACALL DELAY
+                     162     
+0342 E570            163             MOV A, 70H
+0344 75F010          164                     MOV B, #16
+0347 84              165                     DIV AB
+0348 FD              166                     MOV R5, A
+0349 E5F0            167                     MOV A, B
+034B C4              168                     SWAP A
+034C F590            169                     MOV P1,A
+034E C4              170                     SWAP A
+034F F8              171                     MOV R0, A
+                     172                     
+0350 5408            173                     ANL A,#8
+0352 120461          174                     LCALL BINARY_CHECK
+0355 517E            175                     ACALL LCD_SENDDATA
+                     176                     
+0357 E8              177                     MOV A,R0
+0358 5404            178                     ANL A,#4
+035A 120461          179                     LCALL BINARY_CHECK
+035D 517E            180                     ACALL LCD_SENDDATA
+                     181                     
+A51 MACRO ASSEMBLER  PAM                                                                  03/06/2022 15:40:36 PAGE     4
+
+035F E8              182                     MOV A,R0
+0360 5402            183                     ANL A,#2
+0362 120461          184                     LCALL BINARY_CHECK
+0365 517E            185                     ACALL LCD_SENDDATA
+                     186                     
+0367 E8              187                     MOV A,R0
+0368 5401            188                     ANL A,#1
+036A 120461          189                     LCALL BINARY_CHECK
+036D 517E            190                     ACALL LCD_SENDDATA
+036F 913F            191                     ACALL MAIN
+                     192                      
+                     193                     
+                     194     
+                     195     
+0371 7486            196     MOV A,#86H               ;PUT CURSOR ON FIRST ROW,6 COLUMN
+0373 516F            197     ACALL LCD_COMMAND        ;SEND COMMAND TO LCD
+0375 519D            198     ACALL DELAY
+0377 900308          199     MOV   DPTR,#MY_STRING2   ;LOAD DPTR WITH SRING2 ADDR
+037A 518F            200     ACALL LCD_SENDSTRING       ;CALL TEXT STRINGS SENDING ROUTINE
+037C 519D            201     ACALL DELAY
+                     202     
+037E 74C3            203     MOV A,#0C3H              ;PUT CURSOR ON FIRST ROW,3 COLUMN
+0380 516F            204     ACALL LCD_COMMAND        ;SEND COMMAND TO LCD
+0382 519D            205     ACALL DELAY
+0384 900320          206     MOV   DPTR,#MY_STRING5   ;LOAD DPTR WITH SRING5 ADDR
+0387 518F            207     ACALL LCD_SENDSTRING       ;CALL TEXT STRINGS SENDING ROUTINE
+0389 519D            208     ACALL DELAY
+                     209     
+038B ED              210     LEVEL2: MOV A, R5
+038C C4              211                     SWAP A
+038D F590            212                     MOV P1, A
+038F C4              213                     SWAP A
+0390 F8              214                     MOV R0, A
+                     215                     
+0391 5408            216                     ANL A,#8
+0393 120461          217                     LCALL BINARY_CHECK
+0396 517E            218                     ACALL LCD_SENDDATA
+                     219                     
+0398 E8              220                     MOV A,R0
+0399 5404            221                     ANL A,#4
+039B 120461          222                     LCALL BINARY_CHECK
+039E 517E            223                     ACALL LCD_SENDDATA
+                     224                     
+03A0 E8              225                     MOV A,R0
+03A1 5402            226                     ANL A,#2
+03A3 120461          227                     LCALL BINARY_CHECK
+03A6 517E            228                     ACALL LCD_SENDDATA
+                     229                     
+03A8 E8              230                     MOV A,R0
+03A9 5401            231                     ANL A,#1
+03AB 120461          232                     LCALL BINARY_CHECK
+03AE 517E            233                     ACALL LCD_SENDDATA
+03B0 913F            234                     ACALL MAIN
+                     235                     
+                     236     
+                     237     
+03B2 7486            238     MOV A,#86H               ;PUT CURSOR ON FIRST ROW,6 COLUMN
+03B4 516F            239     ACALL LCD_COMMAND        ;SEND COMMAND TO LCD
+03B6 519D            240     ACALL DELAY
+03B8 900310          241     MOV   DPTR,#MY_STRING3   ;LOAD DPTR WITH SRING3 ADDR
+03BB 518F            242     ACALL LCD_SENDSTRING       ;CALL TEXT STRINGS SENDING ROUTINE
+03BD 519D            243     ACALL DELAY
+                     244     
+03BF 74C3            245     MOV A,#0C3H              ;PUT CURSOR ON FIRST ROW,3 COLUMN
+03C1 516F            246     ACALL LCD_COMMAND        ;SEND COMMAND TO LCD
+03C3 519D            247     ACALL DELAY
+A51 MACRO ASSEMBLER  PAM                                                                  03/06/2022 15:40:36 PAGE     5
+
+03C5 900320          248     MOV   DPTR,#MY_STRING5   ;LOAD DPTR WITH SRING5 ADDR
+03C8 518F            249     ACALL LCD_SENDSTRING       ;CALL TEXT STRINGS SENDING ROUTINE
+03CA 519D            250     ACALL DELAY
+                     251     
+03CC E571            252     LEVEL3: MOV A, 71H
+03CE 75F010          253                     MOV B, #16
+03D1 84              254                     DIV AB
+03D2 FD              255                     MOV R5, A
+03D3 E5F0            256                     MOV A, B
+03D5 C4              257                     SWAP A
+03D6 F590            258                     MOV P1,A
+03D8 C4              259                     SWAP A
+03D9 F8              260                     MOV R0, A
+                     261                     
+03DA 5408            262                     ANL A,#8
+03DC 120461          263                     LCALL BINARY_CHECK
+03DF 517E            264                     ACALL LCD_SENDDATA
+                     265                     
+03E1 E8              266                     MOV A,R0
+03E2 5404            267                     ANL A,#4
+03E4 120461          268                     LCALL BINARY_CHECK
+03E7 517E            269                     ACALL LCD_SENDDATA
+                     270                     
+03E9 E8              271                     MOV A,R0
+03EA 5402            272                     ANL A,#2
+03EC 120461          273                     LCALL BINARY_CHECK
+03EF 517E            274                     ACALL LCD_SENDDATA
+                     275                     
+03F1 E8              276                     MOV A,R0
+03F2 5401            277                     ANL A,#1
+03F4 120461          278                     LCALL BINARY_CHECK
+03F7 517E            279                     ACALL LCD_SENDDATA
+03F9 913F            280                     ACALL MAIN
+                     281     
+                     282     
+                     283     
+03FB 7486            284     MOV A,#86H               ;PUT CURSOR ON FIRST ROW,6 COLUMN
+03FD 516F            285     ACALL LCD_COMMAND        ;SEND COMMAND TO LCD
+03FF 519D            286     ACALL DELAY
+0401 900318          287     MOV   DPTR,#MY_STRING4   ;LOAD DPTR WITH SRING4 ADDR
+0404 518F            288     ACALL LCD_SENDSTRING       ;CALL TEXT STRINGS SENDING ROUTINE
+0406 519D            289     ACALL DELAY
+                     290     
+0408 74C3            291     MOV A,#0C3H              ;PUT CURSOR ON FIRST ROW,3 COLUMN
+040A 516F            292     ACALL LCD_COMMAND        ;SEND COMMAND TO LCD
+040C 519D            293     ACALL DELAY
+040E 900320          294     MOV   DPTR,#MY_STRING5   ;LOAD DPTR WITH SRING5 ADDR
+0411 518F            295     ACALL LCD_SENDSTRING       ;CALL TEXT STRINGS SENDING ROUTINE
+0413 519D            296     ACALL DELAY
+                     297     
+0415 ED              298     LEVEL4: MOV A, R5
+0416 C4              299                     SWAP A
+0417 F590            300                     MOV P1, A
+0419 C4              301                     SWAP A
+041A F8              302                     MOV R0, A
+                     303                     
+041B 5408            304                     ANL A,#8
+041D 120461          305                     LCALL BINARY_CHECK
+0420 517E            306                     ACALL LCD_SENDDATA
+                     307                     
+0422 E8              308                     MOV A,R0
+0423 5404            309                     ANL A,#4
+0425 120461          310                     LCALL BINARY_CHECK
+0428 517E            311                     ACALL LCD_SENDDATA
+                     312                     
+042A E8              313                     MOV A,R0
+A51 MACRO ASSEMBLER  PAM                                                                  03/06/2022 15:40:36 PAGE     6
+
+042B 5402            314                     ANL A,#2
+042D 120461          315                     LCALL BINARY_CHECK
+0430 517E            316                     ACALL LCD_SENDDATA
+                     317                     
+0432 E8              318                     MOV A,R0
+0433 5401            319                     ANL A,#1
+0435 120461          320                     LCALL BINARY_CHECK
+0438 517E            321                     ACALL LCD_SENDDATA
+043A 913F            322                     ACALL MAIN
+                     323     
+043C 020328          324     LJMP LEVEL1
+                     325                      
+043F 758901          326     MAIN: MOV TMOD , #01
+0442 7B28            327               MOV R3, #40 
+0444 9147            328               ACALL LOOP3
+0446 22              329               RET
+                     330     
+0447 914A            331     LOOP3: ACALL DELAY_LOOP
+0449 22              332            RET
+                     333                
+044A 9151            334     DELAY_LOOP: ACALL DELAY_TIMER
+044C DBFC            335                 DJNZ R3, DELAY_LOOP
+044E 7B28            336                             MOV R3, #40
+0450 22              337                     RET
+                     338                
+0451 758C3C          339     DELAY_TIMER: MOV TH0, #3CH
+0454 758AB0          340                      MOV TL0, #0B0H
+0457 D28C            341                      SETB TR0
+                     342     
+0459 308DFD          343     COUNT: JNB TF0, COUNT
+045C C28C            344                CLR TR0
+045E C28D            345                CLR TF0
+0460 22              346                RET
+                     347             
+0461 6003            348     BINARY_CHECK: JZ BINARY0
+0463 7004            349                               JNZ BINARY1
+0465 22              350                               RET
+                     351                               
+0466 7430            352     BINARY0: MOV A, #30H
+0468 22              353                      RET
+0469 7431            354     BINARY1: MOV A, #31H
+046B 22              355                      RET
+                     356                     
+                     357     END
+A51 MACRO ASSEMBLER  PAM                                                                  03/06/2022 15:40:36 PAGE     7
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E              T Y P E  V A L U E   ATTRIBUTES
+
+B . . . . . . . . .  D ADDR   00F0H   A   
+BINARY0 . . . . . .  C ADDR   0466H   A   
+BINARY1 . . . . . .  C ADDR   0469H   A   
+BINARY_CHECK. . . .  C ADDR   0461H   A   
+COUNT . . . . . . .  C ADDR   0459H   A   
+DELAY . . . . . . .  C ADDR   029DH   A   
+DELAY_LOOP. . . . .  C ADDR   044AH   A   
+DELAY_TIMER . . . .  C ADDR   0451H   A   
+EXIT. . . . . . . .  C ADDR   029AH   A   
+LCD1. . . . . . . .  C ADDR   0200H   A   
+LCD_COMMAND . . . .  C ADDR   026FH   A   
+LCD_DATA. . . . . .  D ADDR   00A0H   A   
+LCD_EN. . . . . . .  B ADDR   0080H.2 A   
+LCD_INIT. . . . . .  C ADDR   0232H   A   
+LCD_RS. . . . . . .  B ADDR   0080H.0 A   
+LCD_RW. . . . . . .  B ADDR   0080H.1 A   
+LCD_SENDDATA. . . .  C ADDR   027EH   A   
+LCD_SENDSTRING. . .  C ADDR   028FH   A   
+LCD_SENDSTRING_LOOP  C ADDR   0291H   A   
+LEVEL1. . . . . . .  C ADDR   0328H   A   
+LEVEL2. . . . . . .  C ADDR   038BH   A   
+LEVEL3. . . . . . .  C ADDR   03CCH   A   
+LEVEL4. . . . . . .  C ADDR   0415H   A   
+LOOP1 . . . . . . .  C ADDR   02A5H   A   
+LOOP2 . . . . . . .  C ADDR   02A3H   A   
+LOOP3 . . . . . . .  C ADDR   0447H   A   
+MAIN. . . . . . . .  C ADDR   043FH   A   
+MY_STRING1. . . . .  C ADDR   0300H   A   
+MY_STRING2. . . . .  C ADDR   0308H   A   
+MY_STRING3. . . . .  C ADDR   0310H   A   
+MY_STRING4. . . . .  C ADDR   0318H   A   
+MY_STRING5. . . . .  C ADDR   0320H   A   
+P0. . . . . . . . .  D ADDR   0080H   A   
+P1. . . . . . . . .  D ADDR   0090H   A   
+P2. . . . . . . . .  D ADDR   00A0H   A   
+START . . . . . . .  C ADDR   0200H   A   
+TF0 . . . . . . . .  B ADDR   0088H.5 A   
+TH0 . . . . . . . .  D ADDR   008CH   A   
+TL0 . . . . . . . .  D ADDR   008AH   A   
+TMOD. . . . . . . .  D ADDR   0089H   A   
+TR0 . . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

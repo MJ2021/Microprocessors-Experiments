@@ -1,0 +1,77 @@
+A51 MACRO ASSEMBLER  FIRST_QUE_MATRIX                                                     04/02/2022 14:51:32 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\First_Que_Matrix.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE First_Que_Matrix.a51 SET(SMALL) DEBUG PRINT(.\Listings\First_Que_Matrix
+                      .lst) OBJECT(.\Objects\First_Que_Matrix.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 020100            2     LJMP MAIN
+0100                   3     ORG 100H
+0100                   4     MAIN:
+0100 3130              5     CALL ADD_MATRIX
+0102 80FE              6     HERE: SJMP HERE
+0130                   7     ORG 130H
+                       8     
+                       9     
+                      10     
+0130 E530             11     ADD_MATRIX: MOV A, 30H
+0132 8530F0           12                             MOV B , 30H
+0135 A4               13                             MUL AB        
+0136 F5F0             14                             MOV B , A
+0138 AFF0             15                             MOV R7, B
+                      16                             
+013A 7831             17                             MOV R0, #31H    
+013C 7431             18                             MOV A, #31H
+013E 25F0             19                             ADD A, B
+0140 F9               20                             MOV R1, A     
+0141 25F0             21                             ADD A, B
+0143 FA               22                             MOV R2 , A   
+0144 8AF0             23                             MOV B , R2
+                      24                             
+0146 E6               25     SUM: MOV A, @R0
+0147 27               26              ADD A, @R1
+0148 88F0             27              MOV B, R0
+014A A802             28              MOV R0, 2
+014C F6               29              MOV @R0, A
+                      30              
+014D A8F0             31              MOV R0, B
+014F E8               32              MOV A, R0
+0150 2401             33              ADD A, #1
+0152 F8               34              MOV R0, A
+                      35              
+0153 E9               36              MOV A, R1
+0154 2401             37              ADD A, #1
+0156 F9               38              MOV R1, A 
+                      39              
+0157 EA               40              MOV A, R2
+0158 2401             41              ADD A, #1
+015A FA               42              MOV R2, A 
+                      43              
+015B DFE9             44              DJNZ R7, SUM
+                      45              
+015D 22               46     RET 
+                      47     END
+                                      
+A51 MACRO ASSEMBLER  FIRST_QUE_MATRIX                                                     04/02/2022 14:51:32 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ADD_MATRIX . . . .  C ADDR   0130H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+HERE . . . . . . .  C ADDR   0102H   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+SUM. . . . . . . .  C ADDR   0146H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

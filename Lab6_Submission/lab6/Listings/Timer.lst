@@ -1,0 +1,74 @@
+A51 MACRO ASSEMBLER  TIMER                                                                04/02/2022 11:44:14 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Timer.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Timer.a51 SET(SMALL) DEBUG PRINT(.\Listings\Timer.lst) OBJECT(.\Objects
+                      \Timer.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+0000 020200            2     LJMP MAIN
+                       3     
+0200                   4     ORG 200H
+                       5             
+0200 758901            6     MAIN: MOV TMOD , #01
+0203 753002            7               MOV 30H, #2
+0206 E530              8               MOV A, 30H
+0208 75F028            9               MOV B, #40   
+020B A4               10               MUL AB
+020C FB               11               MOV R3, A
+                      12     
+020D 7590FF           13     LOOP1: MOV P1, #0FFH
+0210 511B             14                ACALL DELAY_LOOP
+0212 8000             15                SJMP LOOP2
+                      16                
+0214 759000           17     LOOP2: MOV P1, #00H
+0217 511B             18            ACALL DELAY_LOOP
+0219 80F2             19                SJMP LOOP1
+                      20                
+021B 5121             21     DELAY_LOOP: ACALL DELAY
+021D DBFC             22                 DJNZ R3, DELAY_LOOP
+021F FB               23                             MOV R3, A
+0220 22               24                     RET
+                      25                
+0221 758C3C           26     DELAY: MOV TH0, #3CH
+0224 758AB0           27                MOV TL0, #0B0H
+0227 D28C             28                SETB TR0
+                      29     
+0229 308DFD           30     COUNT: JNB TF0, COUNT
+022C C28C             31                CLR TR0
+022E C28D             32                CLR TF0
+0230 22               33                RET
+                      34                
+                      35     END
+                             
+                                     
+A51 MACRO ASSEMBLER  TIMER                                                                04/02/2022 11:44:14 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+COUNT. . . . . . .  C ADDR   0229H   A   
+DELAY. . . . . . .  C ADDR   0221H   A   
+DELAY_LOOP . . . .  C ADDR   021BH   A   
+LOOP1. . . . . . .  C ADDR   020DH   A   
+LOOP2. . . . . . .  C ADDR   0214H   A   
+MAIN . . . . . . .  C ADDR   0200H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+TF0. . . . . . . .  B ADDR   0088H.5 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
